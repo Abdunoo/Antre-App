@@ -1,0 +1,32 @@
+<div class="h-screen w-screen firstbg py-10">
+	<div *ngIf="!daftarSuccest"
+		class="h-full w-full flex flex-col lg:flex-row justify-center items-center space-y-8 lg:space-x-8 firstbg">
+		<div class="text-white text-lg">
+			<span>Ayo Daftar Sekarang</span>
+		</div>
+		<div class="h-auto w-full lg:w-1/2 px-8">
+			<img src="assets/image 1.png" alt="" class="h-full w-full object-contain">
+		</div>
+		<div class="h-full w-full flex flex-col justify-center space-y-4 px-4 lg:w-1/2 firstbg">
+			<div class="flex flex-col">
+				<label for="email" class="text-white">Email</label>
+				<input #email type="email" id="email" class="p-2 border border-white rounded">
+			</div>
+			<div class="flex flex-col">
+				<label for="businessName" class="text-white">Nama Usaha Atau Bisnis Anda</label>
+				<input #name type="text" id="businessName" class="p-2 border border-white rounded">
+			</div>
+			<p class="text-red-700 py-2 text-sm">{{errorMsg}}</p>
+			<button (click)="daftar(email.value, name.value)" class="h-auto w-full bg-teal-400 p-2 rounded">
+				<label class="text-white">Daftar</label>
+			</button>
+			<div class="text-white text-base">
+				<span>Link untuk membuat Password akan dikirim lewat Email</span>
+			</div>
+		</div>
+	</div>
+	<div *ngIf="daftarSuccest" class="bg-transparent h-full w-full flex flex-col items-center justify-center text-white text-lg">
+		<p>Cek Sekarang</p>
+		<p>Link untuk buat password sudah dikirim ke email anda.</p>
+	</div>
+</div>
