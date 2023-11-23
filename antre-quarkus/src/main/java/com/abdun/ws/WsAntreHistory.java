@@ -1,14 +1,19 @@
 package com.abdun.ws;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.abdun.dto.CurrentTenant;
+import com.abdun.dto.DtoCount;
 import com.abdun.dto.NeedUser;
 import com.abdun.rcd.RcdAntreHistory;
 import com.abdun.rcd.RcdTenant;
 import com.abdun.srv.SrvAntreHistory;
 import com.abdun.srv.SrvTenant;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -35,7 +40,7 @@ public class WsAntreHistory {
 
 	@Path("list")
 	@GET
-	// @NeedUser
+	@NeedUser
 	public List<RcdAntreHistory> listHistory() {
 		List<RcdAntreHistory> lst = srvAntreHistory.getAllHistory();
 		System.out.println("get list of all historys");
@@ -54,7 +59,7 @@ public class WsAntreHistory {
 		List<RcdAntreHistory> lst = srvAntreHistory.getMyHistorys(tenantId);
 		System.out.println("get list of my history");
 		for (RcdAntreHistory rcdAntreHistory : lst) {
-			srvAntreHistory.detach(rcdAntreHistory.getTenantId());
+			srvAntreHistory.detach(rcdAntreHistory.getTenantId().getHistoryCollection());
 			rcdAntreHistory.getTenantId().setHistoryCollection(null);
 		}
 		return lst;
@@ -64,7 +69,8 @@ public class WsAntreHistory {
 	@POST
 	public RcdAntreHistory insert(RcdAntreHistory rcdAntreHistory) {
 		srvAntreHistory.update(rcdAntreHistory);
-		RcdTenant ten = srvTenant.getTenantById(rcdAntreHistory.getTenantId().getId()); // set jumlah antrean in tenant table
+		RcdTenant ten = srvTenant.getTenantById(rcdAntreHistory.getTenantId().getId()); // set jumlah antrean in tenant
+																													// table
 		if (ten.getJumlahAntrean() == null) {
 			ten.setJumlahAntrean(1);
 		} else {
@@ -73,6 +79,15 @@ public class WsAntreHistory {
 		srvTenant.update(ten);
 		System.out.println("add history");
 		return null;
+	}
+
+	@Path("count")
+	@GET
+	@NeedUser
+	public List<DtoCount> countHistoryList() {
+		int tenantId = currentTenant.getTenId();
+		List<DtoCount> lst = srvAntreHistory.countHistory(tenantId);
+		return lst;
 	}
 
 }

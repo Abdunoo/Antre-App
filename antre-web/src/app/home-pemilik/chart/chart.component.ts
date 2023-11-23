@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { PrvHome } from 'src/app/home/PrvHome';
 
 import {
 	ChartComponent,
@@ -7,6 +8,8 @@ import {
 	ApexXAxis,
 	ApexTitleSubtitle
 } from "ng-apexcharts";
+import { NgFor } from '@angular/common';
+import { DtoHistory } from 'src/app/dto/DtoHistory';
 
 export type ChartOptions = {
 	series: ApexAxisChartSeries;
@@ -22,20 +25,40 @@ export type ChartOptions = {
 export class CmpChart implements OnInit {
 
 	myChart?: ApexCharts;
+	dtoCount?: DtoHistory;
+
+
+	constructor(
+		private prvHome: PrvHome
+	) { }
 
 	ngOnInit(): void {
-		this.chart()
+		this.countHistory()
 	}
 
-	chart() {
+	countHistory() {
+		this.prvHome.countHistory().subscribe(
+			{
+				next: result => {
+					this.dtoCount = result
+					this.chart(this.dtoCount)
+				}
+			});
+	}
+
+	chart(data: any) {
 		if (!this.myChart) {
+			const countData = data.map((dtoCount: { count: any; }) => dtoCount.count);
+			const date = data.map((dtoCount: { date: any; }) => dtoCount.date);
+
+
 			const options: ApexCharts.ApexOptions = {
 				colors: ["#1A56DB", "#FDBA8C"],
 				series: [
 					{
 						name: "Pelanggan",
 						color: "#37C8C3",
-						data: [1, 2, 3, 4, 5, 6, 5]
+						data: countData
 					}],
 				chart: {
 					type: "bar",
@@ -59,11 +82,11 @@ export class CmpChart implements OnInit {
 					style: {
 						fontFamily: "Inter, sans-serif",
 					},
-					//   y: {
-					// 		formatter: (val) => {
-					// 			return val.toFixed(2) || '0';
-					// 		}
-					//   }
+					  y: {
+							formatter: (val) => {
+								return val.toFixed(0) || '0';
+							}
+					  }
 				},
 				states: {
 					hover: {
@@ -109,7 +132,7 @@ export class CmpChart implements OnInit {
 					axisTicks: {
 						show: false,
 					},
-					categories: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+					categories: date
 				},
 				yaxis: {
 					show: false,

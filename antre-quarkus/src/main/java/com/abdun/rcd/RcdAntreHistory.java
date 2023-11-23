@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-import org.apache.james.mime4j.dom.datetime.DateTime;
-
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

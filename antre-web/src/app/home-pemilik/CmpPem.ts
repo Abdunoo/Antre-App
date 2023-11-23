@@ -148,7 +148,8 @@ export class CmpPem implements OnInit, OnDestroy {
 		compress.compress(files).then((results: any) => {
 			this.photo = results[0].photo;
 			let toUpload = new AssetToUpload;
-			toUpload.file = this.photo;
+			toUpload.file = new File([this.photo?.data], this.photo?.name);
+			this.updateImage(toUpload)
 		});
 	}
 
@@ -189,6 +190,25 @@ export class CmpPem implements OnInit, OnDestroy {
 			}
 		)
 	}
+
+	downloadQRCode() {
+		const canvas = document.querySelector('canvas') as HTMLCanvasElement;
+		const image = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+		const link = document.createElement('a');
+		link.href = image;
+		link.download = 'qrcode.png';
+		link.click();
+	}
+
+	updateImage(url: any) {
+		this.prvHome.upload(url).subscribe(
+			(data: any) => {
+
+			}
+		)
+	}
+
+	
 
 
 

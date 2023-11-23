@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core"
-import { BehaviorSubject, Subject, Timestamp } from "rxjs"
+import { BehaviorSubject, Subject, Timestamp, map } from "rxjs"
 import { HttpClient } from '@angular/common/http';
+import { AssetToUpload } from "../home-pemilik/AssetToUpload";
+import { environment } from "src/environments/environment.prod";
 
 export interface Tenant {
 	id?: number
@@ -17,6 +19,7 @@ export interface Tenant {
 	token?: string
 	numberNow?: number
 	jumlahAntrean: number
+	imageUrl?: string
 }
 
 export interface Historys {
@@ -39,7 +42,7 @@ export class PrvHome {
 	private statusTokoBuka = new Subject<boolean>
 	private namatenant = new BehaviorSubject<string>('')
 
-	API = 'http://localhost:8080/api/'
+	API = environment.API
 
 	constructor(private http: HttpClient,
 	) { }
@@ -113,7 +116,11 @@ export class PrvHome {
 		return this.http.get<Tenant>(this.API + 'tenant/status/' + status) // mengakses API
 	}
 
-
+	upload(asset: AssetToUpload) {
+		let form = new FormData()
+		form.append('file', asset.file, asset.file.name);
+		return this.http.post<any>(this.API + `tenant/upload`, form) // mengakses API
+	}
 
 	nextAntreNumber(number: number) {
 		return this.http.get<Tenant>(this.API + 'tenant/next/' + number) // mengakses API
@@ -144,4 +151,10 @@ export class PrvHome {
 	insertHistory(history: Historys) {
 		return this.http.post<History>(this.API + `history/insert`, history) // mengakses API
 	}
+
+	countHistory() {
+		return this.http.get<any>(this.API + `history/count`) // mengakses API
+	}
+
+
 }

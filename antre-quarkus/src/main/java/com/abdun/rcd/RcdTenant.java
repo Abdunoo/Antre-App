@@ -52,6 +52,8 @@ public class RcdTenant implements Serializable {
 	private String statusToko;
 	@Column(name = "token")
 	private String token;
+	@Column(name = "image_url")
+	private String imageUrl;
 	@Column(name = "number_now")
 	private Integer numberNow;
 	@Column(name = "jumlah_antrean")
@@ -174,6 +176,14 @@ public class RcdTenant implements Serializable {
 
 	public void setJumlahAntrean(Integer jumlahAntrean) {
 		this.jumlahAntrean = jumlahAntrean;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	public Collection<RcdAntreHistory> getHistoryCollection() {

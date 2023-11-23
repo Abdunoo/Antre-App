@@ -13,8 +13,8 @@
 									<span *ngIf="!tokoBuka" class="text-white text-xl font-bold">Masih Tutup</span>
 								</div>
 							</div>
-							<span *ngIf="tokoBuka" class="text-white text-sm">Tutup pukul 20.00</span>
-							<span *ngIf="!tokoBuka" class="text-white text-sm">Buka pukul 11.00</span>
+							<span *ngIf="tokoBuka" class="text-white text-sm">Tutup pukul {{tenant.tutup}}</span>
+							<span *ngIf="!tokoBuka" class="text-white text-sm">Buka pukul {{tenant.buka}}</span>
 						</div>
 					</div>
 				</div>
@@ -30,8 +30,8 @@
 								<span *ngIf="!tokoBuka" class="text-white text-xl">0</span>
 							</div>
 							<div class="flex justify-start items-start">
-								<span *ngIf="tokoBuka" class="text-white text-sm ">Tutup pukul 20.00</span>
-								<span *ngIf="!tokoBuka" class="text-white text-sm ">Buka pukul 11.00</span>
+								<span *ngIf="tokoBuka" class="text-white text-sm ">Tutup pukul {{tenant.tutup}}</span>
+								<span *ngIf="!tokoBuka" class="text-white text-sm ">Buka pukul {{tenant.buka}}</span>
 							</div>
 							<div class="absolute bottom-0 right-0 h-32 w-24">
 								<img src="assets/hand.png" alt="" class="h-full w-full object-contain">

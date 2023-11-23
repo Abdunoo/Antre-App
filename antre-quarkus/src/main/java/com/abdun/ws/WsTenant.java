@@ -1,10 +1,21 @@
 package com.abdun.ws;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
+// import org.apache.commons.io.FileUtils;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.jboss.resteasy.reactive.MultipartForm;
+
 import com.abdun.dto.CurrentTenant;
+import com.abdun.dto.DtoFile;
 import com.abdun.dto.NeedUser;
 import com.abdun.rcd.RcdTenant;
 import com.abdun.srv.SrvTenant;
@@ -37,25 +48,34 @@ public class WsTenant {
 	@Inject
 	private CurrentTenant currentTenant;
 
+	@ConfigProperty(name = "abdun.upload-image")
+	String uploadDirectory;
+
 	@Path("list")
 	@GET
 	@NeedUser
 	public List<RcdTenant> listTenant() {
 		List<RcdTenant> lst = srvTenant.getTenants();
 		System.out.println("get list of tenant");
+		for (RcdTenant rcdTenant : lst) {
+			String imageUrl = getImage(rcdTenant.getImageUrl());
+			rcdTenant.setImageUrl(imageUrl);
+		}
 		return lst;
 	}
 
 	@Path("tenantName/{name}")
 	@GET
 	public RcdTenant getTenantByName(@PathParam("name") String name) {
-		RcdTenant lst = srvTenant.getTenantByName(name);
-		if (lst != null) {
+		RcdTenant tenant = srvTenant.getTenantByName(name);
+		if (tenant != null) {
 			System.out.println("get tenant by name");
-			lst.setHistoryCollection(null);
-			lst.setPassword(null);
-			lst.setToken(null);
-			return lst;
+			tenant.setHistoryCollection(null);
+			tenant.setPassword(null);
+			tenant.setToken(null);
+			String imageUrl = getImage(tenant.getImageUrl());
+			tenant.setImageUrl(imageUrl);
+			return tenant;
 		} else {
 			return null;
 		}
@@ -70,6 +90,8 @@ public class WsTenant {
 		tenant.setHistoryCollection(null);
 		tenant.setPassword(null);
 		tenant.setToken(null);
+		String imageUrl = getImage(tenant.getImageUrl());
+		tenant.setImageUrl(imageUrl);
 		return tenant;
 	}
 
@@ -82,10 +104,10 @@ public class WsTenant {
 		RcdTenant tenant = srvTenant.getTenantByName(name);
 		String password = param.get("password");
 
-		// if (!BcryptUtil.matches(password, member.getPassword())) {
-		// // gagal login
-		// throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-		// }
+		if (!BcryptUtil.matches(password, tenant.getPassword())) {
+			// gagal login
+			throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+		}
 		HashMap<String, String> result = new HashMap<>();
 		result.put("token", tenant.getToken());
 		return result;
@@ -149,4 +171,74 @@ public class WsTenant {
 		return null;
 	}
 
+	// @Path("imageUrl/{url}")
+	// @GET
+	// @NeedUser
+	// public RcdTenant updateImage(@PathParam("url") String imageUrl) {
+	// RcdTenant ten = srvTenant.getTenantById(currentTenant.getTenId());
+	// ten.setImageUrl(imageUrl);
+	// srvTenant.update(ten);
+	// return null;
+	// }
+
+	@Path("/upload")
+	@POST
+	@NeedUser
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void uploadImage(@MultipartForm DtoFile dtoFile) throws IOException {
+		File uploadDir = new File(uploadDirectory);
+		if (!uploadDir.exists()) {
+			uploadDir.mkdirs();
+		}
+		RcdTenant ten = srvTenant.getTenantById(currentTenant.getTenId());
+		String fileName = ten.getNama() + "_" + dtoFile.file.fileName();
+		ten.setImageUrl(fileName);
+		srvTenant.update(ten);
+
+		System.out.println(uploadDirectory);
+		fileName = uploadDirectory + File.separator + fileName;
+		Files.move(dtoFile.file.uploadedFile(), Paths.get(fileName));
+
+		// HashMap<String, String> result = new HashMap<>();
+		// result.put("imgUrl", dtoFile.file.fileName());
+		// return result;
+		// if (IOException e) {
+		// Log.error("failed to upload file", e);
+		// }base64
+	}
+
+	public String getImage(String imageUrl) {
+		if (imageUrl != null) {
+			try {
+				String path = uploadDirectory + imageUrl;
+				File file = new File(path);
+
+				if (file.exists()) { // Check if the file exists before attempting to read it
+					byte[] fileBytes = readBytesFromFile(file);
+					String result = Base64.getEncoder().encodeToString(fileBytes);
+
+					if (path.toLowerCase().endsWith("jpg") || path.toLowerCase().endsWith("jpeg")) {
+						result = "data:image/jpeg;base64," + result;
+					} else if (path.toLowerCase().endsWith("png")) {
+						result = "data:image/png;base64," + result;
+					} else if (path.toLowerCase().endsWith("gif")) {
+						result = "data:image/gif;base64," + result;
+					}
+
+					imageUrl = result;
+				} else {
+					// Handle the case where the file doesn't exist
+					throw new RuntimeException("File not found: " + path);
+				}
+			} catch (IOException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+		return imageUrl;
+	}
+
+	private byte[] readBytesFromFile(File file) throws IOException {
+		return Files.readAllBytes(file.toPath());
+	}
 }

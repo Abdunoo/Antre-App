@@ -2,7 +2,10 @@
 	<div class="h-full w-full relative flex-grow">
 		<div class="absolute inset-0 overflow-auto bottom-20 space-y-4">
 			<div class="p-4 flex justify-between items-center">
-				<img src="assets/image 1.png" class="rounded-full h-10 w-10 border border-teal-400" alt="">
+				<img *ngIf="!tenant?.imageUrl" src="assets/image 1.png" class="rounded-full h-10 w-10 border border-teal-400"
+					alt="">
+				<img *ngIf="tenant?.imageUrl" [src]="tenant?.imageUrl" class="rounded-full h-10 w-10 border border-teal-400"
+					alt="">
 				<div class="flex space-x-2">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 						stroke="currentColor" class="w-6 h-6 text-teal-400">
@@ -33,9 +36,9 @@
 				<div class="px-6 h-full w-full flex justify-center">
 					<div
 						class="h-full w-full flex justify-between items-center border-2 border-teal-400 secondbg p-1 rounded-lg">
-						<button [disabled]="!tokoBuka" (click)="prevNumber()"
+						<button [disabled]="tenant?.statusToko === 'tutup' || antreNumber === 0" (click)="prevNumber()"
 							class="rounded-lg bg-teal-400 text-white py-2 px-9">Kembali</button>
-						<button [disabled]="!tokoBuka" (click)="nextNumber()"
+						<button [disabled]="tenant?.statusToko === 'tutup'" (click)="nextNumber()"
 							class="rounded-lg bg-teal-400 text-white py-2 px-10">Lanjut</button>
 					</div>
 				</div>
@@ -44,8 +47,8 @@
 					<div class=" h-full w-full rounded-md secondbg p-2">
 						<div
 							class="h-full w-full rounded-md border-2 border-teal-400 flex flex-col justify-center text-center text-white p-1 space-y-4">
-							<div>Antrean Selesai</div>
-							<div>{{antreanSelesai}}</div>
+							<div>Jumlah Antrean</div>
+							<div>{{tenant?.jumlahAntrean}}</div>
 						</div>
 					</div>
 					<div *ngIf="maxNumber" class=" h-full w-full rounded-md secondbg p-2">
@@ -66,18 +69,20 @@
 		</div>
 		<div *ngIf="showPengaturan" class="fixed bottom-16 h-3/5 w-full secondbg rounded-t-3xl pb-4 ">
 			<div class="h-full w-full relative flex-grow">
-				<div (click)="showPengaturan = !showPengaturan" class="flex justify-center items-center ">
-					<p class="border w-20 border-teal-400 mt-2"></p>
+				<div (click)="showPengaturan = !showPengaturan" class="flex justify-center items-center pt-4">
+					<p class="border w-20 border-teal-400"></p>
 				</div>
 				<div (click)="showPengaturan = !showPengaturan"
 					class="flex justify-center items-center py-2 border-b border-teal-400 text-white">
 					<span>{{tenant?.nama}}</span>
 				</div>
-				<div class="absolute inset-0 overflow-y-auto  mt-14">
+				<div class="absolute inset-0 overflow-y-auto mt-20">
 					<div class=" w-full pl-5 h-40 flex space-x-2">
-						<img *ngIf="!selectedImage && !editImage" src="assets/image 1.png" alt=""
-							class="h-full w-full object-contain">
-						<img *ngIf="selectedImage" [src]="selectedImage" alt="" class="h-full w-full object-contain">
+						<div class="h-full w-full mt-2">
+							<img *ngIf="!selectedImage && !editImage" [src]="tenant?.imageUrl" alt=""
+								class="h-full w-full object-contain">
+							<img *ngIf="selectedImage" [src]="selectedImage" alt="" class="h-full w-full object-contain">
+						</div>
 						<form *ngIf="editImage" action="#"
 							class="relative w-4/5 h-32 max-w-xs mb-10 bg-white rounded-lg shadow-inner">
 							<input type="file" id="file-upload" class="hidden" (change)="onFileSelected($event)">
@@ -191,9 +196,9 @@
 				</div>
 			</div>
 		</div>
-		<div *ngIf="showRiwayat" class="fixed bottom-20 h-3/5 w-full secondbg rounded-t-3xl pb-4">
-			<div (click)="showRiwayat = !showRiwayat" class="flex justify-center items-center ">
-				<p class="border w-20 border-teal-400 mt-2"></p>
+		<div *ngIf="showRiwayat" class="fixed bottom-16 h-3/5 w-full secondbg rounded-t-3xl py-4">
+			<div (click)="showRiwayat = !showRiwayat" class="flex justify-center items-center">
+				<p class="border w-20 border-teal-400"></p>
 			</div>
 			<div (click)="showRiwayat = !showRiwayat"
 				class="flex justify-center items-center py-2 border-b border-teal-400 text-white">
@@ -204,33 +209,51 @@
 					<span>Hari Ini</span>
 				</div>
 				<div class="relative flex-grow h-full w-full">
-					<div class="h-full w-full flex flex-col absolute inset-0 overflow-auto text-white">
-					  <div *ngFor="let his of history" class="flex flex-col items-center justify-between mb-4">
-						 <div class="border border-teal-400 rounded-lg px-2 py-4 h-full w-full flex justify-between items-center">
-							<span>{{his.nama}}</span>
-							<span class="border-l border-teal-400 px-4">{{his.nomor}}</span>
-						 </div>
-					  </div>
+					<div class="h-full w-full flex flex-col absolute inset-0 overflow-auto text-white pb-24">
+						<div *ngFor="let his of history" class="flex flex-col items-center justify-between">
+							<div
+								class="border border-teal-400 rounded-lg px-2 py-4 h-full w-full flex justify-between items-center">
+								<span>{{his.nama}}</span>
+								<span class="border-l border-teal-400 px-4">{{his.nomor}}</span>
+							</div>
+						</div>
 					</div>
-				 </div>
-				 
+				</div>
+
 			</div>
 		</div>
 		<div *ngIf="showQRcode" class="fixed bottom-20 h-3/5 w-full secondbg rounded-t-3xl pb-4 ">
-			<div (click)="showQRcode = !showQRcode" class="flex justify-center items-center ">
-				<p class="border w-20 border-teal-400 mt-2"></p>
-			</div>
-			<div (click)="showQRcode = !showQRcode"
-				class="flex justify-center items-center py-2 border-b border-teal-400 text-white">
-				<span>Barcode</span>
-			</div>
-			<div class="flex justify-center items-center text-white text-base py-4">
-				<span>Barcode untuk ambil nomor antre</span>
-			</div>
-			<div class="mx-10 p-6 bg-teal-400 rounded-lg space-y-2">
-				<div class="text-xl text-white flex  flex-col justify-center items-center">
-					<qrcode [qrdata]="tenant.linkTenant" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
-					<span>SCAN HERE</span>
+			<div class="h-full w-full relative flex-grow">
+				<div (click)="showQRcode = !showQRcode" class="flex justify-center items-center pt-2">
+					<p class="border w-20 border-teal-400"></p>
+				</div>
+				<div (click)="showQRcode = !showQRcode"
+					class="flex justify-center items-center py-2 border-b border-teal-400 text-white">
+					<span>Barcode Anda</span>
+				</div>
+				<div class="h-full w-full absolute inset-0 top-14 overflow-auto">
+					<div class="flex justify-center items-center text-white text-base py-4">
+						<span>Barcode untuk ambil nomor antre</span>
+					</div>
+					<div class="mx-10 p-6 bg-teal-400 rounded-lg space-y-2 flex justify-center items-center">
+						<div class="h-full w-full text-xl text-white flex flex-col">
+							<div class="h-full w-full flex justify-center items-center">
+								<qrcode id="qrcode" [qrdata]="tenant.linkTenant" class="h-full w-full object-contain"
+									[errorCorrectionLevel]="'M'">
+								</qrcode>
+							</div>
+							<div class="w-full h-full flex justify-between items-center">
+								<p>SCAN HERE</p>
+								<p (click)="downloadQRCode()">
+									<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+										stroke="currentColor" class="w-6 h-6">
+										<path stroke-linecap="round" stroke-linejoin="round"
+											d="M9 13.5l3 3m0 0l3-3m-3 3v-6m1.06-4.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+									</svg>
+								</p>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

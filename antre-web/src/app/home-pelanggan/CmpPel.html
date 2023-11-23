@@ -2,7 +2,10 @@
 	<div class="h-full w-full relative flex-grow">
 		<div class="absolute inset-0 overflow-auto bottom-20 space-y-4">
 			<div class="p-4 flex justify-between items-center">
-				<img src="assets/image 1.png" class="rounded-full h-10 w-10 border border-teal-400" alt="">
+				<img *ngIf="!tenant.imageUrl" src="assets/image 1.png" class="rounded-full h-10 w-10 border border-teal-400"
+					alt="">
+				<img *ngIf="tenant.imageUrl" [src]="tenant?.imageUrl" class="rounded-full h-10 w-10 border border-teal-400"
+					alt="">
 				<div class="flex space-x-2">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 						stroke="currentColor" class="w-6 h-6 text-teal-400">
@@ -52,12 +55,12 @@
 						<div class="secondbg p-3 text-white space-y-4 rounded-xl">
 							<div class="h-full w-full flex flex-col justify-between  space-y-4 ">
 								<div class="flex flex-col items-center justify-center">
-									<span class="text-xl">{{tenant?.nama}}</span>
-									<span class="text-base">{{tenant?.alamat}}</span>
+									<p class="text-xl text-center">{{tenant?.nama}}</p>
+									<p class="text-base text-center">{{tenant?.alamat}}</p>
 								</div>
 								<div class="flex flex-col">
-									<span class="text-lg">Nomor Antre: {{nomorAnda}}</span>
-									<span class="text-lg">Nama: {{history.nama}}</span>
+									<p class="text-lg">Nomor Antre: {{nomorAnda}}</p>
+									<p class="text-lg">Nama: {{history.nama}}</p>
 								</div>
 							</div>
 							<div>
@@ -69,32 +72,37 @@
 					</div>
 				</div>
 			</div>
-			<div *ngIf="showProfil" class="fixed bottom-20 h-3/5 w-full secondbg rounded-t-3xl pb-4 ">
+			<div *ngIf="showProfil" class="fixed bottom-16 h-3/5 w-full secondbg rounded-t-3xl py-4 ">
 				<div (click)="showProfil = !showProfil" class="flex justify-center items-center ">
-					<p class="border w-20 border-teal-400 mt-2"></p>
+					<p class="border w-20 border-teal-400"></p>
 				</div>
 				<div (click)="showProfil = !showProfil"
 					class="flex justify-center items-center py-2 border-b border-teal-400 text-white">
 					<span>{{tenant?.nama}}</span>
 				</div>
-				<div class="h-auto w-full px-20 py-4">
-					<img src="assets/image 1.png" alt="" class="h-full w-full object-contain">
-				</div>
-				<div class="flex flex-col space-y-4">
-					<div class="text-white px-8">
-						<span>{{tenant?.alamat}}</span>
-					</div>
-					<div class="flex justify-between items-center px-8 text-lg">
-						<div class="text-white space-y-2">
-							<span>Jam Buka</span>
-							<div class="rounded-lg bg-teal-400 px-1 text-center">
-								<span>{{tenant?.buka}}</span>
-							</div>
+				<div class="h-full w-full relative flex-grow">
+					<div class="absolute inset-0 overflow-auto pb-16">
+						<div class="h-auto w-full px-20 py-4">
+							<img *ngIf="!tenant.imageUrl" src="assets/image 1.png" alt="" class="h-full w-full object-contain">
+							<img *ngIf="tenant.imageUrl" [src]="tenant?.imageUrl" alt="" class="h-full w-full object-contain">
 						</div>
-						<div class="text-white space-y-2">
-							<span>Jam Tutup</span>
-							<div class="rounded-lg bg-teal-400 px-1 text-center">
-								<span>{{tenant?.tutup}}</span>
+						<div class="flex flex-col space-y-4">
+							<div class="text-white px-8">
+								<span>Alamat :{{tenant?.alamat}}</span>
+							</div>
+							<div class="flex justify-between items-center px-8 text-lg">
+								<div class="text-white space-y-2">
+									<span>Jam Buka</span>
+									<div class="rounded-lg bg-teal-400 px-1 text-center">
+										<span>{{tenant?.buka}}</span>
+									</div>
+								</div>
+								<div class="text-white space-y-2">
+									<span>Jam Tutup</span>
+									<div class="rounded-lg bg-teal-400 px-1 text-center">
+										<span>{{tenant?.tutup}}</span>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -102,13 +110,13 @@
 			</div>
 
 		</div>
-		<div *ngIf="ambilNomor" class="fixed bottom-20 h-3/5 w-full secondbg rounded-t-3xl pb-4 ">
-			<div (click)="ambilNomor = !ambilNomor" class="flex justify-center items-center ">
-				<p class="border w-20 border-teal-400 mt-2"></p>
+		<div *ngIf="ambilNomor" class="fixed bottom-16 h-3/5 w-full secondbg rounded-t-3xl py-4 ">
+			<div (click)="ambilNomor = !ambilNomor" class="flex justify-center items-center">
+				<p class="border w-20 border-teal-400"></p>
 			</div>
 			<div (click)="ambilNomor = !ambilNomor"
 				class="flex justify-center items-center py-2 border-b border-teal-400 text-white">
-				<span>Nomor Antre Anda</span>
+				<span>Ambil Nomor Antre</span>
 			</div>
 			<div class="h-full w-full relative flex-grow">
 				<div
@@ -133,7 +141,7 @@
 						<button (click)="ambilNomor = false" class="flex border border-teal-400 rounded-lg">
 							<p class="text-center px-8 py-2">Cancel</p>
 						</button>
-						<button [disabled]="!history!.nama"  (click)="insertHistory()"
+						<button [disabled]="!history!.nama" (click)="insertHistory()"
 							class="flex border border-teal-400 rounded-lg">
 							<p class="text-center px-8 py-2">Ambil</p>
 						</button>
@@ -153,9 +161,9 @@
 				</svg>
 				<span>Home</span>
 			</div>
-			<div (click)="showProfil = !showProfil"  class="text-teal-200 flex flex-col items-center">
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" [ngClass]="{'rounded-md bg-teal-400': showProfil}"
-					stroke="currentColor" class="w-6 h-6">
+			<div (click)="showProfil = !showProfil" class="text-teal-200 flex flex-col items-center">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+					[ngClass]="{'rounded-md bg-teal-400': showProfil}" stroke="currentColor" class="w-6 h-6">
 					<path stroke-linecap="round" stroke-linejoin="round"
 						d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
 				</svg>

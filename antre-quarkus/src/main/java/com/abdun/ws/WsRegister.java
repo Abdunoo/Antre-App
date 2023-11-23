@@ -42,11 +42,10 @@ public class WsRegister {
 
 	@Path("new")
 	@POST
-	@Blocking
 	public void registerNewUser(HashMap<String, String> payload) {
 		String email = payload.get("email").toLowerCase().trim();
-		String nameTenant = payload.get("nameTenant").toLowerCase().trim();
-		String baseUrl = "http://localhost:4200/";
+		String nameTenant = payload.get("nameTenant");
+		String baseUrl = "https://sandbox.panemu.com/antrekuyy/";
 		String invitationUrl = srvRegister.createRegistrationEntry(nameTenant, baseUrl);
 		emailSender.sendRegistrationEmail(invitationUrl, email);
 
@@ -67,7 +66,14 @@ public class WsRegister {
 			String rememberMeToken = UUID.randomUUID().toString().replace("-", "");
 			ten.setPassword(password);
 			ten.setToken(rememberMeToken);
-			ten.setLinkTenant("http://localhost:4200/antreTo/" + nameTenant);
+			ten.setLinkTenant("https://sandbox.panemu.com/antrekuyy/antreTo/" + nameTenant);
+			ten.setBuka("08.00");
+			ten.setTutup("20.00");
+			ten.setJumlahAntrean(0);
+			ten.setNumberNow(0);
+			ten.setStatusToko("tutup");
+			ten.setAlamat("belum diset");
+			ten.setMaxAntre(0);
 			srvTenant.update(ten);
 		}
 		HashMap<String, String> result = new HashMap<>();

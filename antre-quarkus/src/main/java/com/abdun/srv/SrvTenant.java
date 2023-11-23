@@ -28,7 +28,7 @@ public class SrvTenant {
 	private CurrentTenant currentTenant;
 
 	public List<RcdTenant> getTenants() {
-		TypedQuery<RcdTenant> tq = em.createQuery("SELECT t.nama FROM RcdTenant t", RcdTenant.class);
+		TypedQuery<RcdTenant> tq = em.createQuery("SELECT t FROM RcdTenant t", RcdTenant.class);
 		return tq.getResultList();
 	}
 
