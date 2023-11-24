@@ -2,9 +2,9 @@
 	<div class="h-full w-full relative flex-grow">
 		<div class="absolute inset-0 overflow-auto bottom-20 space-y-4">
 			<div class="p-4 flex justify-between items-center">
-				<img *ngIf="!tenant.imageUrl" src="assets/image 1.png" class="rounded-full h-10 w-10 border border-teal-400"
+				<img *ngIf="!tenant?.imageUrl" src="assets/image 1.png" class="rounded-full h-10 w-10 border border-teal-400"
 					alt="">
-				<img *ngIf="tenant.imageUrl" [src]="tenant?.imageUrl" class="rounded-full h-10 w-10 border border-teal-400"
+				<img *ngIf="tenant?.imageUrl" [src]="tenant?.imageUrl" class="rounded-full h-10 w-10 border border-teal-400"
 					alt="">
 				<div class="flex space-x-2">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

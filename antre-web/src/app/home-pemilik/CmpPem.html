@@ -2,8 +2,8 @@
 	<div class="h-full w-full relative flex-grow">
 		<div class="absolute inset-0 overflow-auto bottom-20 space-y-4">
 			<div class="p-4 flex justify-between items-center">
-				<img *ngIf="!tenant?.imageUrl" src="assets/image 1.png" class="rounded-full h-10 w-10 border border-teal-400"
-					alt="">
+				<img *ngIf="!tenant?.imageUrl" src="assets/image 1.png"
+					class="rounded-full h-10 w-10 border border-teal-400" alt="">
 				<img *ngIf="tenant?.imageUrl" [src]="tenant?.imageUrl" class="rounded-full h-10 w-10 border border-teal-400"
 					alt="">
 				<div class="flex space-x-2">
@@ -77,24 +77,32 @@
 					<span>{{tenant?.nama}}</span>
 				</div>
 				<div class="absolute inset-0 overflow-y-auto mt-20">
-					<div class=" w-full pl-5 h-40 flex space-x-2">
+					<div class="flex w-full pl-5 h-40 space-x-2">
+						<div class="text-teal-400" (click)="logout()">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+								stroke="currentColor" class="w-5 h-5">
+								<path stroke-linecap="round" stroke-linejoin="round"
+									d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+							</svg>
+						</div>
 						<div class="h-full w-full mt-2">
 							<img *ngIf="!selectedImage && !editImage" [src]="tenant?.imageUrl" alt=""
 								class="h-full w-full object-contain">
 							<img *ngIf="selectedImage" [src]="selectedImage" alt="" class="h-full w-full object-contain">
 						</div>
-						<form *ngIf="editImage" action="#"
-							class="relative w-4/5 h-32 max-w-xs mb-10 bg-white rounded-lg shadow-inner">
-							<input type="file" id="file-upload" class="hidden" (change)="onFileSelected($event)">
-							<label for="file-upload"
-								class="z-20 flex flex-col-reverse items-center justify-center w-full h-full cursor-pointer">
-								<p class="z-10 text-xs font-light text-center text-gray-500">Drag & Drop your files here</p>
-								<svg class="z-10 w-8 h-8 text-indigo-400" fill="currentColor" viewBox="0 0 20 20"
-									xmlns="http://www.w3.org/2000/svg">
-									<path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path>
-								</svg>
-							</label>
-						</form>
+						<div *ngIf="editImage" class="h-full w-full flex justify-center items-center ">
+							<form action="#" class="relative w-full h-auto max-w-xs mb-10 bg-white rounded-lg shadow-inner">
+								<input type="file" id="file-upload" class="hidden" (change)="onFileSelected($event)">
+								<label for="file-upload"
+									class="z-20 flex flex-col-reverse items-center justify-center w-full h-full cursor-pointer">
+									<p class="z-10 text-xs font-light text-center text-gray-500">Drag & Drop your files here</p>
+									<svg class="z-10 w-8 h-8 text-indigo-400" fill="currentColor" viewBox="0 0 20 20"
+										xmlns="http://www.w3.org/2000/svg">
+										<path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path>
+									</svg>
+								</label>
+							</form>
+						</div>
 						<div class="text-teal-400 ">
 							<svg (click)="editImage = !editImage" (click)="selectedImage = null"
 								xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

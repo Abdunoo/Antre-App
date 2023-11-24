@@ -18,8 +18,8 @@ public class DtoCount {
 		return date;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDate(Date result) {
+		this.date = result;
 	}
 
 }

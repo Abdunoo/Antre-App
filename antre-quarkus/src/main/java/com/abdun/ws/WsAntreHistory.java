@@ -59,7 +59,7 @@ public class WsAntreHistory {
 		List<RcdAntreHistory> lst = srvAntreHistory.getMyHistorys(tenantId);
 		System.out.println("get list of my history");
 		for (RcdAntreHistory rcdAntreHistory : lst) {
-			srvAntreHistory.detach(rcdAntreHistory.getTenantId().getHistoryCollection());
+			srvAntreHistory.detach(rcdAntreHistory.getTenantId());
 			rcdAntreHistory.getTenantId().setHistoryCollection(null);
 		}
 		return lst;

@@ -42,14 +42,17 @@ export class CmpChart implements OnInit {
 				next: result => {
 					this.dtoCount = result
 					this.chart(this.dtoCount)
+
 				}
 			});
 	}
 
 	chart(data: any) {
 		if (!this.myChart) {
+
 			const countData = data.map((dtoCount: { count: any; }) => dtoCount.count);
 			const date = data.map((dtoCount: { date: any; }) => dtoCount.date);
+
 
 
 			const options: ApexCharts.ApexOptions = {
@@ -82,11 +85,11 @@ export class CmpChart implements OnInit {
 					style: {
 						fontFamily: "Inter, sans-serif",
 					},
-					  y: {
-							formatter: (val) => {
-								return val.toFixed(0) || '0';
-							}
-					  }
+					y: {
+						formatter: (val) => {
+							return val.toFixed(0) || '0';
+						}
+					}
 				},
 				states: {
 					hover: {

@@ -10,6 +10,7 @@ import com.abdun.dto.NeedUser;
 import com.abdun.rcd.RcdTenant;
 import com.abdun.srv.SrvTenant;
 
+import io.quarkus.logging.Log;
 import io.quarkus.scheduler.Scheduled;
 import io.quarkus.scheduler.ScheduledExecution;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -42,7 +43,7 @@ public class WsScheduler {
 	@ActivateRequestContext
 	@Scheduled(cron = "{abdun.cron}")
 	void resetJumlahAntrean() {
-		// System.out.println("test scheduler");
+		Log.debug("test scheduler");
 		try {
 			List<RcdTenant> tenants = srvTenant.getTenants();
 			for (RcdTenant rcdTenant : tenants) {

@@ -3,6 +3,7 @@ import * as ApexCharts from 'apexcharts';
 import { Historys, PrvHome, Tenant } from '../home/PrvHome';
 import { Subject, take, takeUntil } from 'rxjs';
 import { AssetToUpload } from './AssetToUpload';
+import { Router } from '@angular/router';
 
 declare var Compress: any;
 
@@ -33,7 +34,10 @@ export class CmpPem implements OnInit, OnDestroy {
 
 
 
-	constructor(private prvHome: PrvHome,
+	constructor(
+		private prvHome: PrvHome,
+		private router: Router,
+
 
 
 
@@ -208,7 +212,12 @@ export class CmpPem implements OnInit, OnDestroy {
 		)
 	}
 
-	
+	logout() {
+		this.router.navigate(['/dashboard'])
+		localStorage.removeItem('token');
+	}
+
+
 
 
 

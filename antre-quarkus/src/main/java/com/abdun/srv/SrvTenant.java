@@ -43,15 +43,23 @@ public class SrvTenant {
 	}
 
 	public RcdTenant getTenantByToken(String token) {
-		TypedQuery<RcdTenant> tq = em.createQuery("SELECT t FROM RcdTenant t WHERE t.token = :token", RcdTenant.class);
-		tq.setParameter("token", token);
-		return tq.getSingleResult();
+		try {
+			TypedQuery<RcdTenant> tq = em.createQuery("SELECT t FROM RcdTenant t WHERE t.token = :token", RcdTenant.class);
+			tq.setParameter("token", token);
+			return tq.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 
 	public RcdTenant getTenantById(Integer id) {
-		TypedQuery<RcdTenant> tq = em.createQuery("SELECT t FROM RcdTenant t WHERE t.id = :id", RcdTenant.class);
-		tq.setParameter("id", id);
-		return tq.getSingleResult();
+		try {
+			TypedQuery<RcdTenant> tq = em.createQuery("SELECT t FROM RcdTenant t WHERE t.id = :id", RcdTenant.class);
+			tq.setParameter("id", id);
+			return tq.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 
 	public void updateStatusToko(String status) {

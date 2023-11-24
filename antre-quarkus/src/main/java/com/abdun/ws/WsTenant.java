@@ -100,7 +100,7 @@ public class WsTenant {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public HashMap<String, String> check(Map<String, String> param) {
-		String name = param.get("nama");
+		String name = param.get("nama").trim();
 		RcdTenant tenant = srvTenant.getTenantByName(name);
 		String password = param.get("password");
 
