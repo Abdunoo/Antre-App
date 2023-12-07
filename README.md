@@ -2,7 +2,7 @@
 abdun.upload-image=/home/abdun/experiment/profile/tenant/
 
 # upload quarkus
-http = 5678
+http = 8080
 export GRAALVM_HOME=/home/app/mandrel-java17-23.0.1.2-Final/
 quarkus build --native;
 cd target/

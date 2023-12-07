@@ -13,7 +13,7 @@
 				"build": {
 					"builder": "@angular-devkit/build-angular:browser",
 					"options": {
-						"baseHref": "/antrekuyy/",
+						"baseHref": "",
 						"outputPath": "dist/antre-web",
 						"index": "src/index.html",
 						"main": "src/main.ts",
