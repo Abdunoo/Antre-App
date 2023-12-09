@@ -1,12 +1,12 @@
-<div class="h-screen w-screen firstbg py-10">
-	<div class="h-full w-full flex flex-col lg:flex-row justify-start items-center space-y-8 lg:space-x-8 firstbg">
-		<div class="text-white text-lg firstbg">
+<div class="w-screen h-screen py-10 firstbg">
+	<div class="flex flex-col items-center justify-start w-full h-full space-y-8 lg:flex-row lg:space-x-8 firstbg">
+		<div class="text-lg text-white firstbg">
 			<span>Ayo Masuk Sekarang</span>
 		</div>
-		<div class="h-auto w-full lg:w-1/2 px-8 firstbg">
-			<img src="assets/image1.png" alt="" class="h-full w-full object-contain">
+		<div class="w-full h-auto px-8 lg:w-1/2 firstbg">
+			<img src="assets/image1.png" alt="" class="object-contain w-full h-full">
 		</div>
-		<div class="h-auto w-full flex flex-col justify-center space-y-4 px-4 lg:w-1/2 firstbg">
+		<div class="flex flex-col justify-center w-full h-auto px-4 space-y-4 lg:w-1/2 firstbg">
 			<div class="flex flex-col">
 				<label for="businessName" class="text-white">Nama Usaha Atau Bisnis Anda</label>
 				<input #nama type="text" id="businessName" class="p-2 border border-white rounded" placeholder="Nama">
@@ -15,8 +15,8 @@
 				<label for="password" class="text-white">Password</label>
 				<input #pwd type="password" id="password" class="p-2 border border-white rounded" placeholder="password">
 			</div>
-			<p class="text-red-700 p-2">{{errorMsg}}</p>
-			<button (click)="login(nama.value,pwd.value)" class="h-auto w-full bg-teal-400 p-2 rounded">
+			<p class="p-2 text-red-700">{{errorMsg}}</p>
+			<button (click)="login(nama.value,pwd.value)" class="w-full h-auto p-2 bg-teal-400 rounded">
 				<label class="text-white">Masuk</label>
 			</button>
 			<!-- Add more form fields as needed -->

@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core"
 import { BehaviorSubject, Subject, Timestamp, map } from "rxjs"
 import { HttpClient } from '@angular/common/http';
 import { AssetToUpload } from "../home-pemilik/AssetToUpload";
-import { environment } from "src/environments/environment.prod";
+import { environment } from "src/environments/environment";
 
 export interface Tenant {
 	id?: number

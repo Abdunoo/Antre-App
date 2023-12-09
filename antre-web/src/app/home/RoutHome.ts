@@ -13,7 +13,7 @@ import { AuthGuard } from './AuthGuard';
 @NgModule({
 	imports: [
 		RouterModule.forChild([
-			{ path: 'pemilik', component: CmpPem, canActivate: [AuthGuard] },
+			{ path: 'pemilik', component: CmpPem },
 			{ path: 'antreTo/:tenant', component: CmpPel },
 			{ path: 'dashboard/login', component: CmpLogin },
 			{ path: 'dashboard/daftar', component: CmpDaftar },
